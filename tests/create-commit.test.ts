@@ -3,6 +3,11 @@ import createCommit from '../src/lib/create-commit'
 import { generateToolkit } from './helpers'
 import { Toolkit } from 'actions-toolkit'
 
+import { jest } from "@jest/globals"
+
+const yaml = require('yaml');
+jest.mock('yaml');
+
 describe('create-commit', () => {
   let tools: Toolkit
   let treeParams: any
@@ -23,6 +28,11 @@ describe('create-commit', () => {
   })
 
   it('creates the tree and commit', async () => {
+    yaml.parse.mockResolvedValue({
+      runs: {
+        main: "index.js",
+      },
+    })
     await createCommit(tools)
     expect(nock.isDone()).toBe(true)
 
@@ -38,9 +48,11 @@ describe('create-commit', () => {
   })
 
   it('creates the tree and commit', async () => {
-    jest.spyOn(tools, 'getPackageJSON').mockReturnValueOnce({})
+    yaml.parse.mockResolvedValue({
+      runs: {}
+    })
     await expect(() => createCommit(tools)).rejects.toThrow(
-      'Property "main" does not exist in your `package.json`.'
+      'Property "runs.main" does not exist in your `action.yml`.'
     )
   })
 })

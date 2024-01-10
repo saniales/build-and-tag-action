@@ -1,4 +1,4 @@
-name: Build and Tag
+name: Build and Tag Github Action
 description: Properly tags your GitHub Action
 runs:
   using: node20
