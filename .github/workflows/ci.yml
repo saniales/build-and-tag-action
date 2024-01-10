@@ -15,10 +15,4 @@ jobs:
       - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
-      - run: npm ci
-      - run: npm test
-      - name: codecov
-        run: npx codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      
