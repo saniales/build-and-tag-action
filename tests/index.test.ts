@@ -15,19 +15,19 @@ describe('build-and-tag-action', () => {
 
   it('updates the ref and updates an existing major ref', async () => {
     nock('https://api.github.com')
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1.0.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1.0.0')
       .reply(200)
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1')
       .reply(200)
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1.0')
       .reply(200)
-      .get('/repos/JasonEtco/test/git/matching-refs/tags%2Fv1')
+      .get('/repos/saniales/test/git/matching-refs/tags%2Fv1')
       .reply(200, [{ ref: 'tags/v1' }])
-      .get('/repos/JasonEtco/test/git/matching-refs/tags%2Fv1.0')
+      .get('/repos/saniales/test/git/matching-refs/tags%2Fv1.0')
       .reply(200, [{ ref: 'tags/v1.0' }])
-      .post('/repos/JasonEtco/test/git/commits')
+      .post('/repos/saniales/test/git/commits')
       .reply(200, { commit: { sha: '123abc' } })
-      .post('/repos/JasonEtco/test/git/trees')
+      .post('/repos/saniales/test/git/trees')
       .reply(200)
 
     await buildAndTagAction(tools)
@@ -37,18 +37,18 @@ describe('build-and-tag-action', () => {
 
   it('updates the ref and creates a new major & minor ref', async () => {
     nock('https://api.github.com')
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1.0.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1.0.0')
       .reply(200)
-      .post('/repos/JasonEtco/test/git/refs')
+      .post('/repos/saniales/test/git/refs')
       .times(2)
       .reply(200)
-      .get('/repos/JasonEtco/test/git/matching-refs/tags%2Fv1')
+      .get('/repos/saniales/test/git/matching-refs/tags%2Fv1')
       .reply(200, [])
-      .get('/repos/JasonEtco/test/git/matching-refs/tags%2Fv1.0')
+      .get('/repos/saniales/test/git/matching-refs/tags%2Fv1.0')
       .reply(200, [])
-      .post('/repos/JasonEtco/test/git/commits')
+      .post('/repos/saniales/test/git/commits')
       .reply(200, { commit: { sha: '123abc' } })
-      .post('/repos/JasonEtco/test/git/trees')
+      .post('/repos/saniales/test/git/trees')
       .reply(200)
 
     await buildAndTagAction(tools)
@@ -58,11 +58,11 @@ describe('build-and-tag-action', () => {
 
   it('does not update the major ref if the release is a draft', async () => {
     nock('https://api.github.com')
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1.0.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1.0.0')
       .reply(200)
-      .post('/repos/JasonEtco/test/git/commits')
+      .post('/repos/saniales/test/git/commits')
       .reply(200, { commit: { sha: '123abc' } })
-      .post('/repos/JasonEtco/test/git/trees')
+      .post('/repos/saniales/test/git/trees')
       .reply(200)
 
     tools.context.payload.release.draft = true
@@ -74,11 +74,11 @@ describe('build-and-tag-action', () => {
 
   it('does not update the major ref if the release is a prerelease', async () => {
     nock('https://api.github.com')
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1.0.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1.0.0')
       .reply(200)
-      .post('/repos/JasonEtco/test/git/commits')
+      .post('/repos/saniales/test/git/commits')
       .reply(200, { commit: { sha: '123abc' } })
-      .post('/repos/JasonEtco/test/git/trees')
+      .post('/repos/saniales/test/git/trees')
       .reply(200)
 
     tools.context.payload.release.prerelease = true
@@ -90,18 +90,18 @@ describe('build-and-tag-action', () => {
 
   it('updates the ref and creates a new major ref for an event other than `release`', async () => {
     nock('https://api.github.com')
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv2.0.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv2.0.0')
       .reply(200)
-      .post('/repos/JasonEtco/test/git/refs')
+      .post('/repos/saniales/test/git/refs')
       .times(2)
       .reply(200)
-      .get('/repos/JasonEtco/test/git/matching-refs/tags%2Fv2')
+      .get('/repos/saniales/test/git/matching-refs/tags%2Fv2')
       .reply(200, [])
-      .get('/repos/JasonEtco/test/git/matching-refs/tags%2Fv2.0')
+      .get('/repos/saniales/test/git/matching-refs/tags%2Fv2.0')
       .reply(200, [])
-      .post('/repos/JasonEtco/test/git/commits')
+      .post('/repos/saniales/test/git/commits')
       .reply(200, { commit: { sha: '123abc' } })
-      .post('/repos/JasonEtco/test/git/trees')
+      .post('/repos/saniales/test/git/trees')
       .reply(200)
 
     tools.context.event = 'pull_request'

@@ -9,7 +9,7 @@ describe('update-tag', () => {
 
   beforeEach(() => {
     nock('https://api.github.com')
-      .patch('/repos/JasonEtco/test/git/refs/tags%2Fv1.0.0')
+      .patch('/repos/saniales/test/git/refs/tags%2Fv1.0.0')
       .reply(200, (_, body) => {
         params = body
       })
