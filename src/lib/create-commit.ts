@@ -4,6 +4,14 @@ import readFile from './read-file'
 
 import yaml from 'yaml'
 
+function throwInvalidFileError(property_path: string = "unknown", err: Error | unknown) {
+  if (err instanceof Error) {
+    throw new Error(`invalid "${property_path}": ${err.message}`)
+  }
+
+  throw new Error("Unknown error")
+}
+
 export default async function createCommit(tools: Toolkit) {
   const actionYML = await readFile(tools.workspace, 'action.yml')
   const { runs } = await yaml.parse(actionYML)
@@ -25,30 +33,45 @@ export default async function createCommit(tools: Toolkit) {
       type: 'blob',
       content: actionYML
     },
-    {
-      path: main,
-      mode: '100644',
-      type: 'blob',
-      content: await readFile(tools.workspace, main)
-    }
   ]
 
+  try {
+    treeFiles.push(
+      {
+        path: main,
+        mode: '100644',
+        type: 'blob',
+        content: await readFile(tools.workspace, main)
+      }
+    )
+  } catch (err) {
+    throwInvalidFileError("runs.main", err)
+  }
+
   if (pre) {
-    treeFiles.push({
-      path: pre,
-      mode: '100644',
-      type: 'blob',
-      content: await readFile(tools.workspace, pre)
-    })
+    try {
+      treeFiles.push({
+        path: pre,
+        mode: '100644',
+        type: 'blob',
+        content: await readFile(tools.workspace, pre)
+      })
+    } catch (err) {
+      throwInvalidFileError("runs.pre", err)
+    }
   }
 
   if (post) {
-    treeFiles.push({
-      path: post,
-      mode: '100644',
-      type: 'blob',
-      content: await readFile(tools.workspace, post)
-    })
+    try {
+      treeFiles.push({
+        path: post,
+        mode: '100644',
+        type: 'blob',
+        content: await readFile(tools.workspace, post)
+      })
+    } catch (err) {
+      throwInvalidFileError("runs.post", err)
+    }
   }
 
   tools.log.info('Creating tree')

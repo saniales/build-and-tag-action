@@ -1,10 +1,9 @@
 {
   "name": "build-and-tag-action",
   "private": true,
-  "main": "dist/index.js",
   "scripts": {
-    "start": "npx ncc run ./src/index.ts",
-    "build": "npx ncc build ./src/index.ts",
+    "start": "ncc run ./src/index.ts",
+    "build": "ncc build ./src/index.ts",
     "test": "jest --coverage"
   },
   "dependencies": {
