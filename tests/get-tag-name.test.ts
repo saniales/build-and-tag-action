@@ -15,15 +15,15 @@ describe("update-tag", () => {
     expect(result).toBe("v1.0.0");
   });
 
-  it("gets the tag from the release payload", () => {
+  it("gets the tag from the release payload (Environment)", () => {
     process.env.INPUT_TAG_NAME = "v2.1.1";
     const result = getTagName(tools);
     expect(result).toBe("v2.1.1");
   });
 
-  it("gets the tag from the release payload", () => {
+  it("gets the tag from the release payload (Github event)", () => {
     tools.context.event = "pizza";
-    expect(() => getTagName(tools)).toThrowError(
+    expect(() => getTagName(tools)).toThrow(
       "No tag_name was found or provided!"
     );
   });

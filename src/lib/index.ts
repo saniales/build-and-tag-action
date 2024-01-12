@@ -5,6 +5,12 @@ import createCommit from "./create-commit";
 import updateTag from "./update-tag";
 import getTagName from "./get-tag-name";
 
+/**
+ * Builds and tags an action.
+ *
+ * @param {Toolkit} tools - The toolkit object.
+ * @return {Promise<void>} A promise that resolves when the action is built and tagged.
+ */
 export default async function buildAndTagAction(tools: Toolkit) {
   // Get the tag to update
   const tagName = getTagName(tools);

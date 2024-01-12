@@ -1,5 +1,13 @@
 import { Toolkit } from "actions-toolkit";
 
+/**
+ * Creates or updates a git reference with the given SHA and tag name.
+ *
+ * @param {Toolkit} tools - The toolkit object for accessing GitHub APIs.
+ * @param {string} sha - The SHA of the commit to associate with the reference.
+ * @param {string} tagName - The name of the tag.
+ * @return {Promise<void>} A promise that resolves when the reference is created or updated.
+ */
 export default async function createOrUpdateRef(
   tools: Toolkit,
   sha: string,

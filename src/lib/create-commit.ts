@@ -15,6 +15,15 @@ function throwInvalidFileError(
   throw new Error("Unknown error");
 }
 
+/**
+ * Creates a commit in the GitHub repository.
+ *
+ * @param {Toolkit} tools - The toolkit object provided by Probot.
+ * @return {Promise<any>} A promise that resolves to the commit data.
+ * @throws {Error} In case the commit could not be created (i.e. the
+ *                 action.yml file in the repository is invalid, or
+ *                 some files specified in it do not exist).
+ */
 export default async function createCommit(tools: Toolkit) {
   const actionYML = await readFile(tools.workspace, "action.yml");
   const { runs } = await yaml.parse(actionYML);

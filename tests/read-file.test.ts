@@ -12,8 +12,8 @@ describe("read-file", () => {
   });
 
   it("throws if the file does not exist", async () => {
-    await expect(readFile(baseDir, "nope")).rejects.toThrowError(
-      '"nope" does not exist.'
+    await expect(readFile(baseDir, "invalid-file.txt")).rejects.toThrow(
+      '"invalid-file.txt" does not exist.'
     );
   });
 });
